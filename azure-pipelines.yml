@@ -1,0 +1,30 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+#Runs pipeline on push to main
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+#Two main stages: Build & Deploy
+stages: 
+- stage: Build
+  jobs: 
+  - job: BuildJob
+    steps: 
+    - checkout: self
+
+    - script: docker build -t myapp .
+      displayName: Build Docker Image
+
+- stage: Deploy
+  dependsOn: Build #Deploy only runs if Build succeeds
+  jobs: 
+  - job: DeployJob
+    steps:
+    - script: echo "Deploy step here"
+      displayName: Deploy Placeholder
